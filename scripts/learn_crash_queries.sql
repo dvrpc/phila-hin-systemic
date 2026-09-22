@@ -80,3 +80,11 @@ from crash_pennsylvania cp
 join crash_pa_persons cpp 
 on cp.crn = cpp.crn
 
+--join with condition
+select *
+from(
+	select cp.crn, cp.max_severity_level, cpp.crn as crn2, cpp.person_num, cpp.age, cpp.inj_severity
+	from crash_pennsylvania cp
+	join crash_pa_person cpp 
+	on cp.crn = cpp.crn) as foo
+where foo.crn = '2019001777'
