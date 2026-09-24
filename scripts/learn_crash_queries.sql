@@ -1,3 +1,5 @@
+-- PennDOT Crash Data Dictionary: https://gis.penndot.pa.gov/gishub/crashZip/Crash_Data_Dictionary_2026.pdf
+
 --select all
 select *
 from crash_pennsylvania cp 
@@ -61,6 +63,16 @@ from crash_pennsylvania cp
 where cp.crash_year in ('2020', '2021', '2022', '2023', '2024')
 group by cp.crash_year
 order by cp.crash_year;
+--same thing using case instead of filter
+select 
+    cp.crash_year,
+    sum(case when cp.max_severity_level = '1' then 1 else 0 end) as fatal,
+    sum(case when cp.max_severity_level = '2' then 1 else 0 end) as suspected_serious_injury,
+    count(*) as total_crashes
+from crash_pennsylvania cp
+where cp.crash_year in ('2020', '2021', '2022', '2023', '2024')
+group by cp.crash_year
+order by cp.crash_year;
 
 -- add percent fatal or serious injury column
 select 
@@ -88,3 +100,5 @@ from(
 	join crash_pa_person cpp 
 	on cp.crn = cpp.crn) as foo
 where foo.crn = '2019001777'
+
+--show in Q
